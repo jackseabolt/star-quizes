@@ -8,9 +8,7 @@ const app = express();
 app.use(morgan('common')); 
 app.use(bodyParser.json()); 
 
-app.get('/', (req, res) => Article.findAll({
-    attributes: ['title', 'genre', 'id']
-    },
+app.get('/', (req, res) => Article.findAll(
     {
       limit: 50, 
       include: [{

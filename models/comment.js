@@ -17,7 +17,15 @@ const Comment = sequelize.define('Comment', {
 }, {
     tableName: 'comments', 
     timestamps: false, 
-    underscored: false, 
+    underscored: false,
+    classMethods: {
+        associate: function(models) {
+            Comment.belongsTo(
+                models.Article, 
+                { foreignKey: { allowNull: false }, onDelete: 'CASCADE'}
+            ); 
+        }
+    } 
 }); 
 
 module.exports = {

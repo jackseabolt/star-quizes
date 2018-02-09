@@ -20,14 +20,17 @@ const Article = sequelize.define('Article', {
     tableName: 'articles',
     timestamps: false,
     underscored: true,
-    instanceMethods: {
-      apiRepr: function() {
-        return {
-            title: this.title, 
-            genre: this.genre, 
-            id: this.id
+    classMethods: {
+        associate: function(models) {
+            Article.hasMany(
+                models.Comment, 
+                {
+                    as: 'comments', 
+                    foreignKey: { allowNull: false }, 
+                    onDelete: 'CASCADE'
+                }
+            ); 
         }
-      }
     }
   }
 );
