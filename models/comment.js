@@ -17,7 +17,7 @@ const Comment = sequelize.define('Comment', {
 }, {
     tableName: 'comments', 
     timestamps: false, 
-    underscored: false
+    underscored: true
 }); 
 
 Comment.associate = function (models) {
