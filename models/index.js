@@ -1,10 +1,12 @@
 'use strict'; 
 
-const { Article } = require('./article'); 
+const { Article } = require('./article');
+const { Comment } = require('./comment');  
 
 
 const db = {
-    Article
+    Article, 
+    Comment
 }; 
 
 Object.keys(db).forEach(function(modelName) {

@@ -1,7 +1,7 @@
 const env = process.env.NODE_ENV || 'development'; 
 
 const DATABASE_URL = (
-    process.env.DATABASE_URL || 'postgres://localhost/sequelizeapp'
+    process.env.DATABASE_URL || 'postgres://localhost/nodesequelizeapp'
 ); 
 
 const TEST_DATABASE_URL = (

@@ -1,7 +1,7 @@
 const bodyParser = require('body-parser'); 
 const express = require('express'); 
 const morgan = require('morgan'); 
-const { Article } = require('./models'); 
+const { Article, Comment } = require('./models'); 
 
 const app = express(); 
 
@@ -12,7 +12,11 @@ app.get('/', (req, res) => Article.findAll({
     attributes: ['title', 'genre', 'id']
     },
     {
-      limit: 50
+      limit: 50, 
+      include: [{
+          model: Comment, 
+          as: 'comments'
+      }]
     })
     .then(articles => res.json({
       articles
