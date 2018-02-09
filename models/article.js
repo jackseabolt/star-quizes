@@ -35,6 +35,17 @@ const Article = sequelize.define('Article', {
   }
 );
 
+Article.associate = function(models) {
+    Article.hasMany(
+        models.Comment, 
+        {
+            as: 'comments', 
+            foreignKey: { allowNull: false }, 
+            onDelete: 'CASCADE'
+        }
+    ); 
+}
+
 module.exports = {
     Article
 }; 
