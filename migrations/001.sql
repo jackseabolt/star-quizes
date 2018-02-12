@@ -1,25 +1,29 @@
-BEGIN; 
+BEGIN;  
 
-CREATE TYPE genres AS ENUM (
-    'Fiction', 'Non-Fiction', 'Biography', 'Fantasy', 'Mystery'
-); 
-
-CREATE TABLE articles (
+CREATE TABLE quizes (
     id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL, 
-    genre genres
+    title TEXT NOT NULL
 ); 
 
-CREATE TABLE comments (
+CREATE TABLE questions (
     id SERIAL PRIMARY KEY,
-    content TEXT NOT NULL, 
-    article_id INTEGER REFERENCES articles ON DELETE CASCADE NOT NULL
+    question TEXT NOT NULL,
+    answer_one TEXT,  
+    answer_two TEXT, 
+    answer_three TEXT, 
+    answer_four TEXT, 
+    correct_answer TEXT NOT NULL, 
+    quiz_id INTEGER REFERENCES quizes ON DELETE CASCADE NOT NULL
 ); 
 
-INSERT INTO articles (title, genre) VALUES ('The Lord of the Rings', 'Fantasy');
-INSERT INTO articles (title, genre) VALUES ('Return of the Kind', 'Fantasy');
-INSERT INTO comments (content, article_id) VALUES ('This book was pretty good', '1');
-
-
+INSERT INTO quizes (title) VALUES ('Mercury');
+INSERT INTO quizes (title) VALUES ('Venus');
+INSERT INTO quizes (title) VALUES ('Earth');
+INSERT INTO quizes (title) VALUES ('Mars');
+INSERT INTO quizes (title) VALUES ('Jupiter');
+INSERT INTO quizes (title) VALUES ('Saturn');
+INSERT INTO quizes (title) VALUES ('Uranus');
+INSERT INTO quizes (title) VALUES ('Neptune');
+INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('What is Venues', 'A moon', 'A star', 'A planet', 'An asteroid', 'A planet', 1);
 
 COMMIT; 

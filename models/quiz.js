@@ -1,41 +1,39 @@
 'use strict'; 
+
 const Sequelize = require('sequelize'); 
 
 const {sequelize} = require('../db/sequelize'); 
 
-const Member = sequelize.define('Member', 
+const Quiz = sequelize.define('Quiz', 
     {
         id: {
             type: Sequelize.INTEGER, 
             primaryKey: true, 
             autoIncrement: true
         }, 
-        firstName: {
-            type: Sequelize.STRING, 
-            allowNull: false
-        }, 
-        lastName: {
+        title: {
             type: Sequelize.STRING, 
             allowNull: false
         }
     }, 
     {
-        tableName: 'articles',
+        tableName: 'quizes',
         timestamps: false,
         underscored: true
     }
 );
 
-Member.associate = function(models) {
-    Member.hasMany(
-        models.Member, 
+Quiz.associate = function(models) {
+    Quiz.hasMany(
+        models.Question, 
         {
-            as: 'siblings', 
-            foreignKey: { allowNull: false }
+            as: 'questions', 
+            foreignKey: { allowNull: false }, 
+            onDelete: 'CASCADE'
         }
     )
 }
 
 module.exports = {
-    Member
+    Quiz
 }

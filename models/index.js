@@ -1,9 +1,11 @@
 'use strict'; 
 
-const { Member } = require('./member');  
+const { Quiz } = require('./quiz');  
+const { Question } = require('./question');  
 
 const db = {
-    Member
+    Quiz, 
+    Question
 }; 
 
 Object.keys(db).forEach(function(modelName) {
