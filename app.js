@@ -159,6 +159,21 @@ app.put('/questions/:id', (req, res) => {
 }); 
 
 app.post('/questions', (req, res) => {
+
+    // check for required fields 
+
+    const reqFields = ['question', 'correct_answer']; 
+    Object.keys(req.body).forEach(field => {
+        if (!field in reqFields) {
+            res.status(422).json({ 
+                code: 422,
+                reason: 'Validation Error', 
+                location: field, 
+                message: `${field} is required`
+            })
+        }
+    })
+
     const toCreate = {}; 
     const optionalFields = ['question', 'answer_one', 'answer_two', 'answer_three', 'answer_four', 'correct_answer', 'quiz_id' ]; 
     optionalFields.forEach(field => {
@@ -175,7 +190,17 @@ app.post('/questions', (req, res) => {
             console.error(err); 
             res.sendStatus(500); 
         }); 
-})
+}); 
+
+app.delete('/questions/:id', (req, res) => {
+    return Question
+        .destroy({ where: { id: req.params.id }})
+        .then(() => res.sendStatus(204))
+        .catch(err => {
+            console.error(err); 
+            res.sendStatus(500); 
+        })
+}); 
 
 app.use('*', (req, res) => {
     res.status(404).json({message: 'Not Found'}); 
