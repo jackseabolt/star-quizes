@@ -32,6 +32,14 @@ Quiz.associate = function(models) {
             onDelete: 'CASCADE'
         }
     )
+    Quiz.hasMany(
+        models.Session, 
+        {
+            as: 'sessions', 
+            foreignKey: { allowNull: false }, 
+            onDelete: 'CASCADE'
+        }
+    )
 }
 
 module.exports = {
