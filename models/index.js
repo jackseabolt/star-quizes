@@ -2,10 +2,12 @@
 
 const { Quiz } = require('./quiz');  
 const { Question } = require('./question');  
+const { Session } = require('./session'); 
 
 const db = {
     Quiz, 
-    Question
+    Question, 
+    Session
 }; 
 
 Object.keys(db).forEach(function(modelName) {
