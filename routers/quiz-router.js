@@ -1,8 +1,203 @@
 'use strict'
 const express = require('express'); 
-const bodyParser = require('body-parser'); 
-const { Question, Quiz } = require('../models');
+const bodyParser = require('body-parser');
+const jsonParser = bodyParser.json();  
+const { Question, Quiz, Session } = require('../models');
 const router = express.Router(); 
+
+
+// START QUIZ OR ANSWER QUESTION
+
+router.get('/:quizTitle/question/:sessionId', (req, res) => {
+    let quizId, current, sessionId, quizLength; 
+    return Quiz
+        .find({
+            where: { title: req.params.quizTitle }
+        })
+        .then(quiz => {
+            quizId = quiz.id
+            if (req.params.sessionId === 'new') {
+                // no sessionId was provided
+                return Session
+                    .create({ score: 0, current: 0, quiz_id: quizId }) 
+                    .then(session => {
+                        sessionId = session.id;
+                        current = session.current 
+                        return
+                    })
+                    .then(() => {
+                          return Quiz  
+                            .find({where: { title: req.params.quizTitle}, 
+                                include: [{
+                                    model: Question, 
+                                    as: 'questions'
+                                }]
+                            })
+                            .then(quiz => {
+                                quizLength = quiz.questions.length; 
+
+                                let answers = []; 
+                                quiz.questions[current].answer_one ? answers.push(quiz.questions[current].answer_one): null;
+                                quiz.questions[current].answer_two ? answers.push(quiz.questions[current].answer_two): null;
+                                quiz.questions[current].answer_three ? answers.push(quiz.questions[current].answer_three): null;
+                                quiz.questions[current].answer_four ? answers.push(quiz.questions[current].answer_four): null;
+
+                                res.status(200).json({ 
+                                    question: quiz.questions[current].question, 
+                                    answers, 
+                                    sessionId, 
+                                    // For display purposes, not logic
+                                    current: current + 1 , 
+                                    quizLength 
+                                }); 
+                            })
+                            .catch(err => {
+                                console.error(err); 
+                                res.sendStatus(500); 
+                            });
+                    })
+                    .catch(err => {
+                        console.error(err.message); 
+                        res.sendStatus(500);
+                    })
+            } else {
+                // A sessionId was provided
+                sessionId = req.params.sessionId
+                return Session
+                .findById(sessionId) 
+                .then(session => { 
+                    current = session.current 
+                    return
+                })
+                .then(() => {
+                    return Quiz  
+                    .find({where: { title: req.params.quizTitle}, 
+                        include: [{
+                            model: Question, 
+                            as: 'questions'
+                        }]
+                    })
+                    .then(quiz => {
+                        quizLength = quiz.questions.length; 
+
+                        let answers = []; 
+                        quiz.questions[current].answer_one ? answers.push(quiz.questions[current].answer_one): null;
+                        quiz.questions[current].answer_two ? answers.push(quiz.questions[current].answer_two): null;
+                        quiz.questions[current].answer_three ? answers.push(quiz.questions[current].answer_three): null;
+                        quiz.questions[current].answer_four ? answers.push(quiz.questions[current].answer_four): null;
+
+                        res.status(200).json({ 
+                            question: quiz.questions[current].question, 
+                            answers, 
+                            sessionId, 
+                            // For display purposes, not logic
+                            current: current + 1, 
+                            quizLength 
+                        }); 
+                    })
+                })
+                .catch(err => {
+                    console.error(err); 
+                    res.sendStatus(500); 
+                }); 
+            }
+        });   
+}); 
+
+// ANSWER A QUIZ QUESTION
+
+router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
+    let current, sessionId, question, correct_answer, score, response, quizLength;
+    let answers = [];
+    return Session
+    .findById(req.params.sessionId) 
+    .then(session => { 
+        score = session.score; 
+        sessionId = session.id;
+        current = session.current 
+        return Quiz  
+        .find({where: { title: req.params.quizTitle}, 
+            include: [{
+                model: Question, 
+                as: 'questions'
+            }]
+        })
+        .then(quiz => {
+
+            quizLength = quiz.questions.length; 
+
+            quiz.questions[current].answer_one ? answers.push(quiz.questions[current].answer_one): null;
+            quiz.questions[current].answer_two ? answers.push(quiz.questions[current].answer_two): null;
+            quiz.questions[current].answer_three ? answers.push(quiz.questions[current].answer_three): null;
+            quiz.questions[current].answer_four ? answers.push(quiz.questions[current].answer_four): null;
+            
+            correct_answer = quiz.questions[0].correct_answer; 
+
+            if (correct_answer === req.body.answer) {
+                score += 1; 
+                response = "You're right!"
+            }
+            else {
+                response = "That is not correct."
+            }
+            current += 1; 
+            question = quiz.questions[0].question; 
+
+            if(quizLength >= current) {
+                return Session
+                .destroy({where: { id: req.params.sessionId}})
+                .then(() => {
+                    response = `${response} Your final score is ${score/quizLength * 100}%`; 
+                    res.status(200).json({ question, answers, correct_answer, score, response, current, continue: false }); 
+                })
+                .catch(err => {
+                    res.send(404).json({
+                        code: 404, 
+                        reason: 'Validation Error', 
+                        location: 'Session Id', 
+                        message: 'Session was not found'
+                    })
+                })
+            } 
+            else {
+                return Session
+                .update({ score, current }, {where: { id: req.params.sessionId}})
+                .then(() => {
+                    res.status(200).json({ question, answers, correct_answer, score, response, current, continue: true }); 
+                })
+                .catch(err => {
+                    res.send(404).json({
+                        code: 404, 
+                        reason: 'Validation Error', 
+                        location: 'Session Id', 
+                        message: 'Session was not found'
+                    });
+                });
+            }
+        })
+        .catch(err => { 
+            res.send(404).json({
+                code: 404, 
+                reason: 'Validation Error', 
+                location: 'Quiz Title', 
+                message: 'Quiz was not found'
+            });
+        }); 
+    }) 
+    .catch(err => {
+        res.send(404).json({
+            code: 404, 
+            reason: 'Validation Error', 
+            location: 'Session Id', 
+            message: 'Session was not found'
+        });
+    });
+});
+
+
+// ADMIN ROUTES
+
+// ADMIN - GET ALL QUIZES
 
 router.get('/', (req, res) => Quiz.findAll(
     {
@@ -21,6 +216,8 @@ router.get('/', (req, res) => Quiz.findAll(
     })
 );
 
+// ADMIN - GET ENTIRE QUIZ
+
 router.get('/:title', (req, res) => {
     return Quiz  
         .find({where: { title: req.params.title}, 
@@ -36,53 +233,7 @@ router.get('/:title', (req, res) => {
         })
 });
 
-router.get('/:title/question/:id/question', (req, res) => {
-    return Quiz  
-    .find({where: { title: req.params.title}, 
-        include: [{
-            model: Question, 
-            as: 'questions'
-        }]
-    })
-    .then(quiz => {
-        let answers = []; 
-
-        quiz.questions[0].answer_one ? answers.push(quiz.questions[0].answer_one): null;
-        quiz.questions[0].answer_two ? answers.push(quiz.questions[0].answer_two): null;
-        quiz.questions[0].answer_three ? answers.push(quiz.questions[0].answer_three): null;
-        quiz.questions[0].answer_four ? answers.push(quiz.questions[0].answer_four): null;
-
-        res.status(200).json({ question: quiz.questions[0].question, answers }); 
-    })
-    .catch(err => {
-        console.error(err); 
-        res.sendStatus(500); 
-    });
-}); 
-
-router.get('/:title/question/:id/answer', (req, res) => {
-    return Quiz  
-    .find({where: { title: req.params.title}, 
-        include: [{
-            model: Question, 
-            as: 'questions'
-        }]
-    })
-    .then(quiz => {
-        let correct_answer = quiz.questions[0].correct_answer; 
-        let answers = []; 
-        quiz.questions[0].answer_one ? answers.push(quiz.questions[0].answer_one): null;
-        quiz.questions[0].answer_two ? answers.push(quiz.questions[0].answer_two): null;
-        quiz.questions[0].answer_three ? answers.push(quiz.questions[0].answer_three): null;
-        quiz.questions[0].answer_four ? answers.push(quiz.questions[0].answer_four): null;
-
-        res.status(200).json({ question: quiz.questions[0].question, answers, correct_answer }); 
-    })
-    .catch(err => {
-        console.error(err); 
-        res.sendStatus(500); 
-    }); 
-});
+// ADMIN - UPDATE A QUIZ
 
 router.put('/:title', (req, res) => {
     return Quiz
@@ -95,6 +246,8 @@ router.put('/:title', (req, res) => {
             res.sendStatus(500); 
         });
 }); 
+
+// ADMIN - CREATE A QUIZ
 
 router.post('/', (req, res) => {
     return Quiz
@@ -109,6 +262,8 @@ router.post('/', (req, res) => {
             res.sendStatus(500); 
         }); 
 }); 
+
+// ADMIN - DELETE A QUIZ
 
 router.delete('/:title', (req, res) => {
     return Quiz
