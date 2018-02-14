@@ -5,6 +5,13 @@ CREATE TABLE quizes (
     title TEXT NOT NULL
 ); 
 
+CREATE TABLE sessions (
+    id SERIAL PRIMARY KEY,
+    score INTEGER NOT NULL,
+    current INTEGER NOT NULL,
+    quiz_id INTEGER REFERENCES quizes ON DELETE CASCADE NOT NULL
+); 
+
 CREATE TABLE questions (
     id SERIAL PRIMARY KEY,
     question TEXT NOT NULL,
