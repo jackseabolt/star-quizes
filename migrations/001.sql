@@ -31,6 +31,10 @@ INSERT INTO quizes (title) VALUES ('Jupiter');
 INSERT INTO quizes (title) VALUES ('Saturn');
 INSERT INTO quizes (title) VALUES ('Uranus');
 INSERT INTO quizes (title) VALUES ('Neptune');
-INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('What is Venues', 'A moon', 'A star', 'A planet', 'An asteroid', 'A planet', 1);
+INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('What is Venus?', 'A moon', 'A star', 'A planet', 'An asteroid', 'A planet', 2);
+INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('Venus is the ___ closest planet to the Sun', 'first', 'second', 'third', 'fourth', 'second', 2);
+INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('The atmosphere of Venus is 96.5% ___', 'nitrogen', 'helium', 'carbon dioxide', 'oxygen', 'carbon dioxide', 2);
+INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('How many Earth days does it take Venus to orbit around the Sun?', ' 224.7 days', '53.4 days', '461.1 days', '40.5 days', '224.7 days', 2);
+
 
 COMMIT; 

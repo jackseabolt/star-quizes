@@ -67,7 +67,8 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                 return Session
                 .findById(sessionId) 
                 .then(session => { 
-                    current = session.current 
+                    current = session.current;  
+                    score = session.score; 
                     return
                 })
                 .then(() => {
@@ -93,7 +94,8 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                             sessionId, 
                             // For display purposes, not logic
                             current: current + 1, 
-                            quizLength 
+                            quizLength, 
+                            score 
                         }); 
                     })
                 })
@@ -126,13 +128,14 @@ router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
         .then(quiz => {
 
             quizLength = quiz.questions.length; 
+            console.log(quizLength)
 
             quiz.questions[current].answer_one ? answers.push(quiz.questions[current].answer_one): null;
             quiz.questions[current].answer_two ? answers.push(quiz.questions[current].answer_two): null;
             quiz.questions[current].answer_three ? answers.push(quiz.questions[current].answer_three): null;
             quiz.questions[current].answer_four ? answers.push(quiz.questions[current].answer_four): null;
             
-            correct_answer = quiz.questions[0].correct_answer; 
+            correct_answer = quiz.questions[current].correct_answer; 
 
             if (correct_answer === req.body.answer) {
                 score += 1; 
@@ -141,15 +144,26 @@ router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
             else {
                 response = "That is not correct."
             }
+            console.log(`Current before ${current}`)
             current += 1; 
-            question = quiz.questions[0].question; 
+            console.log(`Current after ${current}`)
+            question = quiz.questions[current - 1].question; 
 
-            if(quizLength >= current) {
+            if(current >= quizLength) {
                 return Session
                 .destroy({where: { id: req.params.sessionId}})
                 .then(() => {
                     response = `${response} Your final score is ${score/quizLength * 100}%`; 
-                    res.status(200).json({ question, answers, correct_answer, score, response, current, continue: false }); 
+                    res.status(200).json({ 
+                        question, 
+                        answers, 
+                        correct_answer, 
+                        score, 
+                        response, 
+                        current, 
+                        continue: false, 
+                        quizLength 
+                    }); 
                 })
                 .catch(err => {
                     res.send(404).json({
