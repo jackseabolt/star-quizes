@@ -14,6 +14,10 @@ const Quiz = sequelize.define('Quiz',
         title: {
             type: Sequelize.STRING, 
             allowNull: false
+        }, 
+        image: {
+            type: Sequelize.STRING, 
+            allowNull: false
         }
     }, 
     {
