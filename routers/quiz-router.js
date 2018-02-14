@@ -10,7 +10,7 @@ const router = express.Router();
 // START QUIZ OR ANSWER QUESTION
 
 router.get('/:quizTitle/question/:sessionId', (req, res) => {
-    let quizId, current, sessionId, quizLength; 
+    let quizId, current, sessionId, quizLength, score; 
     return Quiz
         .find({
             where: { title: req.params.quizTitle }
@@ -19,6 +19,7 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
             quizId = quiz.id
             if (req.params.sessionId === 'new') {
                 // no sessionId was provided
+                console.log("THIS RAN")
                 return Session
                     .create({ score: 0, current: 0, quiz_id: quizId }) 
                     .then(session => {
@@ -63,12 +64,15 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                     })
             } else {
                 // A sessionId was provided
+                console.log("WRONG RAN")
                 sessionId = req.params.sessionId
+                console.log("SESSION ID", sessionId)
                 return Session
                 .findById(sessionId) 
                 .then(session => { 
                     current = session.current;  
-                    score = session.score; 
+                    score = session.score;
+                    console.log("HERE IS SESSION") 
                     return
                 })
                 .then(() => {
@@ -104,7 +108,7 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                     res.sendStatus(500); 
                 }); 
             }
-        });   
+        });    
 }); 
 
 // ANSWER A QUIZ QUESTION
@@ -126,9 +130,7 @@ router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
             }]
         })
         .then(quiz => {
-
             quizLength = quiz.questions.length; 
-            console.log(quizLength)
 
             quiz.questions[current].answer_one ? answers.push(quiz.questions[current].answer_one): null;
             quiz.questions[current].answer_two ? answers.push(quiz.questions[current].answer_two): null;
@@ -178,7 +180,15 @@ router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
                 return Session
                 .update({ score, current }, {where: { id: req.params.sessionId}})
                 .then(() => {
-                    res.status(200).json({ question, answers, correct_answer, score, response, current, continue: true }); 
+                    res.status(200).json({ 
+                        question, 
+                        answers, 
+                        correct_answer, 
+                        score, 
+                        response, 
+                        current,
+                        quizLength, 
+                        continue: true }); 
                 })
                 .catch(err => {
                     res.send(404).json({
@@ -209,12 +219,27 @@ router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
     });
 });
 
+// GET WITHOUT QUESTIONS
+
+router.get('/', (req, res) => Quiz.findAll(
+    {
+      limit: 50
+    })
+    .then(quizes => res.json({
+      quizes
+    }))
+    .catch(err => {
+        console.error(err); 
+        res.sendStatus(500); 
+    })
+);
+
 
 // ADMIN ROUTES
 
 // ADMIN - GET ALL QUIZES
 
-router.get('/', (req, res) => Quiz.findAll(
+router.get('/adminget', (req, res) => Quiz.findAll(
     {
       limit: 50, 
       include: [{
