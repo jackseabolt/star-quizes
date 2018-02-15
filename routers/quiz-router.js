@@ -54,7 +54,7 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                                             res.status(500).json({ 
                                                code: 500, 
                                                message: 'Quiz has no questions', 
-                                               location: 'quizeTitle', 
+                                               location: 'quizTitle', 
                                                reason: 'Validation Error'
                                             }); 
                                         })
@@ -71,8 +71,7 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                                     title: quiz.title 
                                 }); 
                             })
-                            .catch(err => {
-                                console.error(err); 
+                            .catch(err => { 
                                 res.sendStatus(500); 
                             });
                     })
