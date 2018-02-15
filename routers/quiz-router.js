@@ -47,8 +47,21 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                                     quiz.questions[current].answer_four ? answers.push(quiz.questions[current].answer_four): null;
                                     question = quiz.questions[current].question
                                 }
+                                else {
+                                    return Session
+                                        .destroy({where: { id: sessionId }})
+                                        .then(() => {
+                                            res.status(500).json({ 
+                                               code: 500, 
+                                               message: 'Quiz has no questions', 
+                                               location: 'quizeTitle', 
+                                               reason: 'Validation Error'
+                                            }); 
+                                        })
+                                        .catch(err => res.sendStatus(500))
+                                }
 
-                                res.status(200).json({ 
+                                return res.status(200).json({ 
                                     question, 
                                     answers, 
                                     sessionId, 
