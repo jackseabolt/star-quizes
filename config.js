@@ -14,5 +14,5 @@ module.exports = {
     DATABASE_URL: env === 'test' ? TEST_DATABASE_URL : DATABASE_URL,
     // see http://docs.sequelizejs.com/en/latest/api/sequelize/#new-sequelizedatabase-usernamenull-passwordnull-options
     SEQUELIZE_OPTIONS: {logging: env === 'test' ? false : console.log}, 
-    CLIENT_ORIGIN: 'http://localhost:3000/'
+    CLIENT_ORIGIN: 'http://localhost:3000'
 };
