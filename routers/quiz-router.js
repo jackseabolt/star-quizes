@@ -37,20 +37,25 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                             })
                             .then(quiz => {
                                 quizLength = quiz.questions.length; 
-
                                 let answers = []; 
-                                quiz.questions[current].answer_one ? answers.push(quiz.questions[current].answer_one): null;
-                                quiz.questions[current].answer_two ? answers.push(quiz.questions[current].answer_two): null;
-                                quiz.questions[current].answer_three ? answers.push(quiz.questions[current].answer_three): null;
-                                quiz.questions[current].answer_four ? answers.push(quiz.questions[current].answer_four): null;
+                                let question = null; 
+
+                                if(quizLength) {
+                                    quiz.questions[current].answer_one ? answers.push(quiz.questions[current].answer_one): null;
+                                    quiz.questions[current].answer_two ? answers.push(quiz.questions[current].answer_two): null;
+                                    quiz.questions[current].answer_three ? answers.push(quiz.questions[current].answer_three): null;
+                                    quiz.questions[current].answer_four ? answers.push(quiz.questions[current].answer_four): null;
+                                    question = quiz.questions[current].question
+                                }
 
                                 res.status(200).json({ 
-                                    question: quiz.questions[current].question, 
+                                    question, 
                                     answers, 
                                     sessionId, 
                                     // For display purposes, not logic
                                     current: current + 1 , 
-                                    quizLength 
+                                    quizLength, 
+                                    title: quiz.title 
                                 }); 
                             })
                             .catch(err => {
