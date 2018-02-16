@@ -67,7 +67,8 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                                     // For display purposes, not logic
                                     current: current + 1 , 
                                     quizLength, 
-                                    title: quiz.title 
+                                    title: quiz.title, 
+                                    continue: true 
                                 }); 
                             })
                             .catch(err => { 
@@ -114,7 +115,8 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                             quizLength, 
                             score,  
                             title: req.params.quizTitle, 
-                            test: 5
+                            test: 5, 
+                            continue: true 
                         }); 
                     })
                 })
