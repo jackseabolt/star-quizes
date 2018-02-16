@@ -113,7 +113,7 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                             current: current + 1, 
                             quizLength, 
                             score,  
-                            title: quiz.title 
+                            title: res.params.quizTitle
                         }); 
                     })
                 })
