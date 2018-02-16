@@ -19,7 +19,6 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
             quizId = quiz.id
             if (req.params.sessionId === 'new') {
                 // no sessionId was provided
-                console.log("THIS RAN")
                 return Session
                     .create({ score: 0, current: 0, quiz_id: quizId }) 
                     .then(session => {
@@ -81,15 +80,12 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                     })
             } else {
                 // A sessionId was provided
-                console.log("WRONG RAN")
                 sessionId = req.params.sessionId
-                console.log("SESSION ID", sessionId)
                 return Session
                 .findById(sessionId) 
                 .then(session => { 
                     current = session.current;  
                     score = session.score;
-                    console.log("HERE IS SESSION") 
                     return
                 })
                 .then(() => {
@@ -181,7 +177,8 @@ router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
                         response, 
                         current, 
                         continue: false, 
-                        quizLength 
+                        quizLength, 
+                        sessionId 
                     }); 
                 })
                 .catch(err => {
