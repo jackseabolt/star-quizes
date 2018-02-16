@@ -205,7 +205,9 @@ router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
                         response, 
                         current,
                         quizLength, 
-                        continue: true }); 
+                        continue: true, 
+                        title: req.params.quizTitle  
+                    }); 
                 })
                 .catch(err => {
                     res.send(404).json({
