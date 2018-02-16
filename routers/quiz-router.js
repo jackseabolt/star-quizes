@@ -112,7 +112,8 @@ router.get('/:quizTitle/question/:sessionId', (req, res) => {
                             // For display purposes, not logic
                             current: current + 1, 
                             quizLength, 
-                            score 
+                            score,  
+                            title: quiz.title 
                         }); 
                     })
                 })
