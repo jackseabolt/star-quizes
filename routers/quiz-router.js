@@ -180,7 +180,8 @@ router.post('/:quizTitle/answer/:sessionId', jsonParser, (req, res) => {
                         current, 
                         continue: false, 
                         quizLength, 
-                        sessionId 
+                        sessionId, 
+                        title: req.params.quizTitle 
                     }); 
                 })
                 .catch(err => {
