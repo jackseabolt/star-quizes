@@ -41,19 +41,19 @@ INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_fo
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('What was the name of the first spacecraft to visit Mercury?', 'Mariner 10', 'Apollo 15', 'MESSENGER', 'Callisto', 'Mariner 10', 1);
 
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('What is Venus?', 'A moon', 'A star', 'A planet', 'An asteroid', 'A planet', 2);
-INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('Venus is the ___ closest planet to the Sun', 'second', 'third', 'fourth', 'firth', 'second', 2);
+INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('Venus is the ___ closest planet to the Sun', 'second', 'third', 'fourth', 'fifth', 'second', 2);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('The atmosphere of Venus is 96.5% ___', 'nitrogen', 'helium', 'carbon dioxide', 'oxygen', 'carbon dioxide', 2);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('How many Earth days does it take Venus to orbit around the Sun?', '224.7 days', '53.4 days', '461.1 days', '40.5 days', '224.7 days', 2);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('The surface of Venus is primarily covered in ___', 'Acid', 'Water', 'Ice', 'Rock', 'Rock', 2);
 
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('Where is Earth?', 'The Milky Way', 'Local Group', 'Laniakea Supercluster', 'All of the above', 'All of the above', 3);
-INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('Earth is the ___ closest planet to the Sun', 'second', 'third', 'fourth', 'firth', 'third', 3);
+INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('Earth is the ___ closest planet to the Sun', 'second', 'third', 'fourth', 'fifth', 'third', 3);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('The atmosphere of Earth is 78% ___', 'nitrogen', 'helium', 'carbon dioxide', 'oxygen', 'nitrogen', 3);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('How many days does it take Earth to orbit around the Sun?', '365 days', '53.4 days', '461.1 days', '40.5 days', '365 days', 3);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('When did the first spacecraft leave Earth?', '1947', '1964', '1961', '1957', '1957', 3);
 
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('What is Mars?', 'A moon', 'A star', 'A planet', 'An asteroid', 'A planet', 4);
-INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('Mars is the ___ closest planet to the Sun', 'second', 'third', 'fourth', 'firth', 'fourth', 4);
+INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('Mars is the ___ closest planet to the Sun', 'second', 'third', 'fourth', 'fifth', 'fourth', 4);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('The atmosphere of Mars is 95% ___', 'nitrogen', 'helium', 'carbon dioxide', 'oxygen', 'carbon dioxide', 4);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('How many Earth days does it take Mars to orbit around the Sun?', '687 days', '53 days', '461 days', '400 days', '687 days', 4);
 INSERT INTO questions (question, answer_one, answer_two, answer_three, answer_four, correct_answer, quiz_id) VALUES ('When did the first spacecraft reach Mars?', '1967', '1976', '1971', '1987', '1976', 4);
