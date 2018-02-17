@@ -1,7 +1,5 @@
 const env = process.env.NODE_ENV || 'development'; 
 
-require('dotenv').load();
-
 const DATABASE_URL = (
     process.env.DATABASE_URL || 'postgres://localhost/star-quizes'
 ); 
@@ -16,5 +14,6 @@ module.exports = {
     DATABASE_URL: env === 'test' ? TEST_DATABASE_URL : DATABASE_URL,
     // see http://docs.sequelizejs.com/en/latest/api/sequelize/#new-sequelizedatabase-usernamenull-passwordnull-options
     SEQUELIZE_OPTIONS: {logging: env === 'test' ? false : console.log}, 
-    CLIENT_ORIGIN: process.env.CLIENT_ORIGIN || 'http://localhost:3000' 
+    CLIENT_ORIGIN: 'https://starquizes.netlify.com' 
+    // 'http://localhost:3000' || 
 };
