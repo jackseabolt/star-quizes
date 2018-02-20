@@ -15,4 +15,5 @@ module.exports = {
     // see http://docs.sequelizejs.com/en/latest/api/sequelize/#new-sequelizedatabase-usernamenull-passwordnull-options
     SEQUELIZE_OPTIONS: {logging: env === 'test' ? false : console.log}, 
     CLIENT_ORIGIN: process.env.CLIENT_ORIGIN || 'http://localhost:3000'  
+    // 'https://starquizes.netlify.com'
 };
